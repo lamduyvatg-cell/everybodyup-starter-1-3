@@ -15,8 +15,14 @@ export interface VocabItem {
 
 export interface PhonicsItem {
   letter: string;
+  upperLetter: string;
+  lowerLetter: string;
+  letterNameIpa: string;
   sound: string;
+  letterPronounceText: string;
+  soundPronounceText: string;
   word: string;
+  wordPronounceText?: string;
   vietnamese: string;
   iconKey: string;
   unit: UnitId;
@@ -51,33 +57,4 @@ export interface QuizQuestion {
     isCorrect: boolean;
   }[];
   explanation: string;
-}
-
-export interface StudentScoreRecord {
-  id: string;
-  studentId: string;
-  studentName: string;
-  className: string;
-  unit: string;
-  score: number; // 0 - 10
-  totalQuestions: number;
-  correctCount: number;
-  timeSpentSeconds: number;
-  timestamp: string;
-  details: {
-    questionId: string;
-    isCorrect: boolean;
-    questionText: string;
-    chosenAnswer: string;
-    correctAnswer: string;
-  }[];
-  notes?: string;
-}
-
-export interface StudentProfile {
-  id: string;
-  name: string;
-  className: string;
-  avatar: string;
-  createdDate: string;
 }

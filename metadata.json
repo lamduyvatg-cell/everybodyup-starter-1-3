@@ -1,6 +1,6 @@
 {
   "name": "Bé Vui Học Tiếng Anh - Ôn Tập Unit 1-3",
-  "description": "Ứng dụng bài tập ôn tiếng Anh sinh động cho học sinh lớp lá và lớp 1 (Unit 1: Art Class, Unit 2: Let's Play, Unit 3: Many Colors) tích hợp phát âm chuẩn, chấm điểm tự động và bảng điểm giáo viên.",
+  "description": "Ứng dụng bài tập ôn tiếng Anh sinh động cho học sinh lớp lá và lớp 1 (Unit 1: Art Class, Unit 2: Let's Play, Unit 3: Many Colors) với hình ảnh minh họa, phát âm chuẩn bản xứ và trò chơi tương tác vui nhộn.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

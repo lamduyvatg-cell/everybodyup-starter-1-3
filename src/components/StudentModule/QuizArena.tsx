@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { UnitId, QuizQuestion } from '../../types/curriculum';
-import { QUESTION_BANK, UNITS } from '../../data/curriculumData';
+import { QUESTION_BANK, UNITS, PHONICS_LIST } from '../../data/curriculumData';
 import { IllustrationIcon } from '../IllustrationIcon';
-import { playSoundEffect, speakEnglish, speakVietnamese } from '../../utils/audio';
+import {
+  playSoundEffect,
+  speakEnglish,
+  speakVietnamese,
+  playPhonicsSequence,
+} from '../../utils/audio';
 import { Volume2, CheckCircle2, XCircle, RotateCcw, ArrowRight, Star } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -87,6 +92,27 @@ export const QuizArena: React.FC<QuizArenaProps> = ({ initialUnit = 'unit1' }) =
     setScore(0);
   };
 
+  const handlePlayQuestionAudio = () => {
+    playSoundEffect('pop');
+    if (!currentQ.audioPromptEn) return;
+
+    if (currentQ.type === 'phonics_match') {
+      // Find matching phonics letter if available
+      const phonicsItem = PHONICS_LIST.find(
+        (p) =>
+          currentQ.audioPromptEn?.toLowerCase().includes(p.word.toLowerCase()) ||
+          currentQ.audioPromptEn?.startsWith(p.upperLetter)
+      );
+
+      if (phonicsItem) {
+        playPhonicsSequence(phonicsItem);
+        return;
+      }
+    }
+
+    speakEnglish(currentQ.audioPromptEn, 0.8);
+  };
+
   const isCompleted = currentIndex >= questions.length - 1 && isAnswered;
 
   return (
@@ -166,15 +192,12 @@ export const QuizArena: React.FC<QuizArenaProps> = ({ initialUnit = 'unit1' }) =
             <div className="flex items-center gap-2 shrink-0">
               {currentQ.audioPromptEn && (
                 <button
-                  onClick={() => {
-                    playSoundEffect('pop');
-                    speakEnglish(currentQ.audioPromptEn || '', 0.85);
-                  }}
+                  onClick={handlePlayQuestionAudio}
                   className="px-3.5 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
                   title="Nghe tiếng Anh"
                 >
                   <Volume2 className="w-4 h-4" />
-                  <span>Nghe Tiếng Anh</span>
+                  <span>{currentQ.type === 'phonics_match' ? 'Nghe Âm Phonics (3 Bước)' : 'Nghe Tiếng Anh'}</span>
                 </button>
               )}
 
@@ -290,18 +313,17 @@ export const QuizArena: React.FC<QuizArenaProps> = ({ initialUnit = 'unit1' }) =
 
           <div className="space-y-2">
             <h2 className="text-3xl font-black text-slate-900 font-['Outfit']">
-              Chúc Mừng Bé Đã Hoàn Thành Bài Luyện Tập!
+              Chúc Mừng Bé Đã Khám Phá Xong Các Câu Đố!
             </h2>
             <p className="text-slate-600 text-sm max-w-md mx-auto">
-              Bé đã trả lời đúng <span className="font-extrabold text-orange-600">{score}</span> /{' '}
-              <span className="font-bold">{questions.length}</span> câu hỏi!
+              Bé đã cùng chơi và lắng nghe rất chăm chỉ qua các bài tập Unit 1, 2 và 3!
             </p>
           </div>
 
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-amber-50 rounded-2xl border border-amber-200">
             <Star className="w-6 h-6 text-amber-500 fill-amber-400" />
             <span className="font-black text-amber-950 text-xl font-mono">
-              + {score} Điểm Thưởng
+              Bé Thu Thập Được {starCount} Ngôi Sao Vàng
             </span>
           </div>
 
